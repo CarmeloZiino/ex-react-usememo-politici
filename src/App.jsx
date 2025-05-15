@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 const urlPoliticians = "http://localhost:5001/politicians";
 
+import MemoCard from "./components/CardPoliticians";
+
 function App() {
   const [politicians, setPoliticians] = useState([]);
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch(urlPoliticians)
@@ -17,7 +19,7 @@ function App() {
 
   const politiciFiltrati = useMemo(() => {
     return politicians.filter((p) => {
-      console.log(search)
+      console.log(search);
       return p.name.toLowerCase().includes(search.toLowerCase());
     });
   }, [politicians, search]);
@@ -52,21 +54,7 @@ function App() {
           );
         })} */}
         {politiciFiltrati.map((p) => {
-          return (
-            <div className="card" key={p.id}>
-              <div className="contentCard">
-                <div className="politiciansDetails">
-                  <img src={p.image} alt={p.name} width={100} />{" "}
-                  <span>
-                    <p className="politicians">{p.name}</p>
-                    <p className="positionPol"> {p.position}</p>
-                  </span>
-                </div>
-
-                <p className="bioPol">{p.biography}</p>
-              </div>
-            </div>
-          );
+          return <MemoCard politician={p} />;
         })}
       </div>
     </>
@@ -104,4 +92,13 @@ Usa React.memo() per evitare il ri-render delle card quando le loro props non ca
 Aggiungi un console.log() dentro il componente Card per verificare che venga renderizzato solo quando necessario.
 
 Obiettivo: Se la lista filtrata cambia, solo le nuove card devono essere renderizzate, mentre le altre rimangono in memoria senza essere ridisegnate.
+
+
+
+🎯 Bonus: Filtrare anche per posizione politica (position)
+Creare un array derivato che contiene tutte le posizioni politiche (position) disponibili, ma senza duplicati.
+Aggiungere un <select> sopra la lista che permette di filtrare i politici anche in base alla loro posizione.
+Modificare l’array filtrato per tenere conto sia della stringa di ricerca, sia della posizione selezionata.
+
 */
+
